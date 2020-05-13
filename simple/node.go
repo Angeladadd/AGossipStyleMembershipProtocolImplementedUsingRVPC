@@ -1,13 +1,14 @@
 package simple
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 )
 
 const (
 	P_FAIL=0.5
-	GOSSIP_INTERVAL=1000 //1s发一次
+	GOSSIP_INTERVAL=time.Second //1s发一次
 	NODE_NUM = 5
 	BUFSIZE = 4 //channel buffer size 一般设置为数据中心节点的数目即可
 	K = 2
@@ -32,13 +33,44 @@ func NewNode(address string) (instance *Node) {
 	instance.Time = make(chan bool)
 	instance.Timeout = make(chan bool)
 	instance.IsBad = false
+	instance.Others = make([]Node, 0)
+	fmt.Printf("Initialized Node %p\n", instance)
 	return
+}
+
+//多路复用实现Nondeterminated Choice
+func (node *Node) Running() {
+	fmt.Printf("Node %p Starts\n", node)
+	go node.Timer()
+	node.Time <- true
+	for {
+		node.Bad()
+		if (node.IsBad) {
+			continue
+		}
+		select {
+		case messages := <- node.Trans:
+			node.Deliver(messages)
+		case <- node.Timeout:
+			node.Gossiping()
+		}
+	}
+}
+
+func (node *Node) Timer() {
+	for {
+		select {
+		case <- node.Time:
+			time.Sleep(GOSSIP_INTERVAL)
+			node.Timeout <- true
+		}
+	}
 }
 
 func (node *Node) Bad() {
 	rand.Seed(time.Now().UnixNano())
-	r := rand.Int31n(2) // 0,1
-	if r < 1 {
+	r := rand.Float32()
+	if r < P_FAIL {
 		node.IsBad = true
 	} else {
 		node.IsBad = false
@@ -59,6 +91,7 @@ func (node *Node) Gossiping() {
 		targets = append(targets, node.Others[p])
 	}
 	transmitting(messages, targets)
+	node.Time <- true
 }
 
 func transmitting(messages []Message, targets []Node) {

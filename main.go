@@ -1,18 +1,25 @@
 package main
 
 import (
-	"./simple"
+	"time"
+	// "fmt"
+    "./simple"
+    "strconv"
 )
 
 func main() {
-    var membership = simple.NewMembership("hhh")
-    var messages = make([]simple.Message, 0)
-    messages = append(messages, simple.Message{"1",6})
-    messages = append(messages, simple.Message{"2",3})
-    membership.Deliver(messages)
-    messages[0].Heartbeat = 3
-    membership.Deliver(messages)
-    messages[1].Heartbeat = 7
-    membership.Deliver(messages)
+    nodes := make([]simple.Node, 0)
+    for i:=0;i<simple.NODE_NUM;i++ {
+        nodes = append(nodes, *simple.NewNode("address"+strconv.Itoa(i)))
+    }
+
+    for i:=0;i<simple.NODE_NUM;i++ {
+        nodes[i].Others = append(nodes[i].Others, nodes[:i]...)
+        nodes[i].Others = append(nodes[i].Others, nodes[i+1:]...)
+        // fmt.Println(len(node.Others))
+        go nodes[i].Running()
+    }
+
+    time.Sleep(time.Second * 10)
 }
 

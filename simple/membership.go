@@ -2,6 +2,7 @@ package simple
 
 import (
 	"time"
+	"fmt"
 )
 
 type Message struct {
@@ -29,6 +30,7 @@ func NewMembership(address string) (instance *Membership){
 	instance.Address = address
 	instance.Heartbeat = 0
 	instance.MembershipList = make(map[string]Cell,0)
+	fmt.Printf("Initialzed Membership %p\n", instance)
 	return
 }
 
