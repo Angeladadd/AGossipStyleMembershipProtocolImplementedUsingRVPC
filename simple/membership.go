@@ -4,10 +4,6 @@ import (
 	"time"
 )
 
-const (
-	BUFSIZE = 1
-)
-
 type Message struct {
 	Address string
 	Heartbeat int
