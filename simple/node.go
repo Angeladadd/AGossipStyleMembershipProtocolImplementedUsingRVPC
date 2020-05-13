@@ -66,4 +66,3 @@ func transmitting(messages []Message, targets []Node) {
 		t.Trans <- messages
 	}
 }
-
