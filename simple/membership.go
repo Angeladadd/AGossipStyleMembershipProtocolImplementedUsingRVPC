@@ -50,7 +50,7 @@ func (membership *Membership) Deliver(messages []Message) {
 
 func (membership *Membership) Accept() (messages []Message) {
 	list := membership.MembershipList
-	messages = make([]Message, len(list)+1)
+	messages = make([]Message, 0)
 	membership.Heartbeat++
 	messages = append(messages, Message{membership.Address, membership.Heartbeat})
 	for _, cell := range list {

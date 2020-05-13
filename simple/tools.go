@@ -11,7 +11,7 @@ func Copy(m Message) Message {
 
 func (c Cell) String() string {
 	b := new(bytes.Buffer)
-	fmt.Fprintf(b, "{Address:%s,Heartbeat:%d,LocalTime:%s}", c.Message.Address, c.Message.Heartbeat, c.LocalTime.UnixNano())
+	fmt.Fprintf(b, "{Address:%s,Heartbeat:%d,LocalTime:%d}", c.Message.Address, c.Message.Heartbeat, c.LocalTime.UnixNano())
 	return b.String()
 }
 
