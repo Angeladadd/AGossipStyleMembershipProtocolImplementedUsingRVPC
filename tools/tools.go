@@ -7,18 +7,8 @@ import (
 	// "../simple"
 )
 
-// func main() {
-//     // go Spinner(100 * time.Millisecond)
-//     ProgressBar(100 * time.Millisecond)
-// }
-
-func Spinner(delay time.Duration) {
-    for {
-        for _, r := range `-\|/` {
-            fmt.Printf("\r%c", r)
-            time.Sleep(delay)
-        }
-    }
+func main() {
+    ProgressBar(100 * time.Millisecond)
 }
 
 func ProgressBar(delay time.Duration) {
@@ -32,3 +22,13 @@ func ProgressBar(delay time.Duration) {
     }
     fmt.Printf("\r[%s>%d%%]\n",buffer.String(), cnt)
 }
+
+func Spinner(delay time.Duration) {
+    for {
+        for _, r := range `-\|/` {
+            fmt.Printf("\r%c", r)
+            time.Sleep(delay)
+        }
+    }
+}
+

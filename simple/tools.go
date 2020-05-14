@@ -15,12 +15,13 @@ func (c Cell) String() string {
 	return b.String()
 }
 
-func (membership *Membership) PrintUpdate() {
+func (membership *Membership) PrintUpdate() string {
 	b := new(bytes.Buffer)
 	fmt.Fprintf(b, "[UPDATE] {Address:%s, MembershipList:[",membership.Address)
 	for _, value := range membership.MembershipList {
         fmt.Fprintf(b, "%s,", value.String())
 	}
 	b.WriteString("\b]}\n")
-	fmt.Printf(b.String())
+	// fmt.Printf(b.String())
+	return b.String()
 }

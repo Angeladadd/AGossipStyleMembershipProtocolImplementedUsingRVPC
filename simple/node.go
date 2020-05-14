@@ -9,6 +9,7 @@ import (
 const (
 	P_FAIL=0.5
 	GOSSIP_INTERVAL=time.Second //1s发一次
+	REPAIR_TIME=2*time.Second
 	NODE_NUM = 8
 	BUFSIZE = 7 //channel buffer size 一般设置为数据中心节点的数目即可
 	K = 2
@@ -23,7 +24,7 @@ type Node struct {
 	//与传值无关，暂且传个bool
 	Time chan bool
 	Timeout chan bool
-	Others []Node
+	Others []*Node
 }
 
 func NewNode(address string) (instance *Node) {
@@ -33,7 +34,7 @@ func NewNode(address string) (instance *Node) {
 	instance.Time = make(chan bool)
 	instance.Timeout = make(chan bool)
 	instance.IsBad = false
-	instance.Others = make([]Node, 0)
+	instance.Others = make([]*Node, 0)
 	fmt.Printf("Initialized Node %p\n", instance)
 	return
 }
@@ -46,6 +47,7 @@ func (node *Node) Running() {
 	for {
 		node.Bad()
 		if (node.IsBad) {
+			time.Sleep(REPAIR_TIME)
 			continue
 		}
 		select {
@@ -86,7 +88,7 @@ func (node *Node) Gossiping() {
 	rand.Seed(time.Now().UnixNano())
 	//随机全排列，取前K个
 	perm := rand.Perm(len(node.Others))[:K]
-	var targets []Node
+	var targets []*Node
 	for _, p := range perm {
 		targets = append(targets, node.Others[p])
 	}
@@ -94,7 +96,7 @@ func (node *Node) Gossiping() {
 	node.Time <- true
 }
 
-func transmitting(messages []Message, targets []Node) {
+func transmitting(messages []Message, targets []*Node) {
 	for _, t := range targets {
 		t.Trans <- messages
 	}

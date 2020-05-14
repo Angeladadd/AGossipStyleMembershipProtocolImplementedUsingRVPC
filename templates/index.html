@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+        <script type="text/javascript">
+        $(function() {
+            $.ajax({
+                type: "GET",//请求方式
+                url: "/membership",//地址，就是json文件的请求路径
+                dataType: "text",
+                success: function(result) {
+                    document.write("???")
+                }
+            });
+        });
+        </script>
+</body>
+</html>
