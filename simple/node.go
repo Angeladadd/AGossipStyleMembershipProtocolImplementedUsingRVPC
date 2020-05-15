@@ -10,8 +10,8 @@ const (
 	P_FAIL=0.2
 	GOSSIP_INTERVAL=time.Second //1s发一次
 	REPAIR_TIME=2*time.Second
-	NODE_NUM = 8
-	BUFSIZE = 7 //channel buffer size 一般设置为数据中心节点的数目即可
+	NODE_NUM = 5
+	BUFSIZE = 4 //channel buffer size 一般设置为数据中心节点的数目即可
 	K = 2
 )
 
