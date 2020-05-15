@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	P_FAIL=0.5
+	P_FAIL=0.2
 	GOSSIP_INTERVAL=time.Second //1s发一次
 	REPAIR_TIME=2*time.Second
 	NODE_NUM = 8

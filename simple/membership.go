@@ -16,7 +16,7 @@ type Message struct {
  */
 type Cell struct {
 	Message Message
-	LocalTime time.Time
+	LocalTime int64
 }
 
 type Membership struct {
@@ -42,7 +42,7 @@ func (membership *Membership) Deliver(messages []Message) {
 		}
 		if cell, ok := list[message.Address]; !ok || (cell.Message.Heartbeat < message.Heartbeat) {
 			//MembershipList中没有这个节点的信息或信息是旧的，增加或更新
-			list[message.Address] = Cell{Message:Copy(message), LocalTime:time.Now()}
+			list[message.Address] = Cell{Message:Copy(message), LocalTime:time.Now().UnixNano()}
 		} 
 	}
 	membership.PrintUpdate()

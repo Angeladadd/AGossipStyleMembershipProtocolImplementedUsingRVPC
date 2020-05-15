@@ -1,13 +1,12 @@
 package main
 
 import (
-	// "time"
+	"encoding/json"
 	"fmt"
     "./simple"
     "strconv"
     "log"
     "net/http"
-    "bytes"
     "io/ioutil"
 )
 
@@ -22,7 +21,6 @@ func main() {
     for i:=0;i<simple.NODE_NUM;i++ {
         nodes[i].Others = append(nodes[i].Others, nodes[:i]...)
         nodes[i].Others = append(nodes[i].Others, nodes[i+1:]...)
-        // fmt.Println(len(node.Others))
         go nodes[i].Running()
     }
 
@@ -39,10 +37,17 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func membership(w http.ResponseWriter, r *http.Request) {
-    b := new(bytes.Buffer)
-    for _, node := range nodes {
-        b.WriteString(node.Membership.PrintUpdate()+"\n")
-    } 
-    fmt.Fprint(w, b.String())
+    header := w.Header()
+    header.Add("Content-Type","application/json")
+    w.WriteHeader(http.StatusOK)
+    var s []simple.Info
+    for _,node := range nodes {
+        s = append(s, node.Info())
+    }
+    b, err := json.Marshal(s)
+    if err!= nil {
+        log.Println("marshal error")
+    }
+    fmt.Fprintf(w, string(b))
 }
 

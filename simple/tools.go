@@ -11,8 +11,17 @@ func Copy(m Message) Message {
 
 func (c Cell) String() string {
 	b := new(bytes.Buffer)
-	fmt.Fprintf(b, "{Address:%s,Heartbeat:%d,LocalTime:%d}", c.Message.Address, c.Message.Heartbeat, c.LocalTime.UnixNano())
+	fmt.Fprintf(b, "{Address:%s,Heartbeat:%d,LocalTime:%d}", c.Message.Address, c.Message.Heartbeat, c)
 	return b.String()
+}
+
+type Info struct {
+	Membership Membership
+	IsBad bool
+}
+
+func (node Node) Info() Info {
+	return Info{Membership:*node.Membership, IsBad:node.IsBad}
 }
 
 func (membership *Membership) PrintUpdate() string {
@@ -25,3 +34,4 @@ func (membership *Membership) PrintUpdate() string {
 	// fmt.Printf(b.String())
 	return b.String()
 }
+

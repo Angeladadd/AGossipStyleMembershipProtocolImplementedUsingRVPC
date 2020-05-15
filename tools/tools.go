@@ -7,9 +7,9 @@ import (
 	// "../simple"
 )
 
-func main() {
-    ProgressBar(100 * time.Millisecond)
-}
+// func main() {
+//     ProgressBar(100 * time.Millisecond)
+// }
 
 func ProgressBar(delay time.Duration) {
     var buffer bytes.Buffer
