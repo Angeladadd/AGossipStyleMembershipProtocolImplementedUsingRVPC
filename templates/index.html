@@ -5,13 +5,16 @@
 </head>
 <body>
     <div id="membership"></div>
-    <!-- <p id="address1"></p>
-    <p id="address2"></p>
-    <p id="address3"></p>
-    <p id="address4"></p>
-    <p id="address0"></p> -->
 </body>
 <script type="text/javascript">
+    function add_node(address) {
+        return "<div id="+address+"><p>"+
+        address+"</p><p id="+address+"_status></p><p id="+
+        address+"_list></p></div>";
+    }
+    function update_list(json) {
+
+    }
     var getting = {
         url: "/membership",
         type: "GET",
@@ -20,15 +23,12 @@
             var div = $("#membership");
             if (div.children().length == 0) {
                 $.each(result, function(i, item) {
-                    div.append("<div id=\""+item.Membership.Address+
-                    "\"><p>"+item.Membership.Address+"</p><p id=\""+item.Membership.Address+"_status\"></p><p id="+item.Membership.Address+"_list></p></div>");
+                    div.append(add_node(item.Membership.Address));
                 });
             }
-            // var membership_div = document.getElementById("membership");
             $.each(result, function(i, item) {
                 $("#"+item.Membership.Address+"_status").html(JSON.stringify(item.IsBad));
                 $("#"+item.Membership.Address+"_list").html(JSON.stringify(item.Membership.MembershipList));
-                // console.log(item.Membership.Address);
             });
         }
     };
