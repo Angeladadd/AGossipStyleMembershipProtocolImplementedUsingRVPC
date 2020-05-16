@@ -3,6 +3,7 @@ package simple
 import (
 	"fmt"
 	"bytes"
+	"time"
 )
 
 func Copy(m Message) Message {
@@ -17,11 +18,12 @@ func (c Cell) String() string {
 
 type Info struct {
 	Membership Membership
+	LocalTime int64
 	IsBad bool
 }
 
 func (node Node) Info() Info {
-	return Info{Membership:*node.Membership, IsBad:node.IsBad}
+	return Info{Membership:*node.Membership, LocalTime:time.Now().UnixNano(), IsBad:node.IsBad}
 }
 
 func (membership *Membership) PrintUpdate() string {
