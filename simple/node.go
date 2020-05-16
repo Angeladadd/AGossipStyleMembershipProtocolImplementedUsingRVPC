@@ -10,8 +10,8 @@ const (
 	P_FAIL=0.2
 	GOSSIP_INTERVAL=time.Second //1s发一次
 	REPAIR_TIME=2*time.Second
-	NODE_NUM = 5
-	BUFSIZE = 4 //channel buffer size 一般设置为数据中心节点的数目即可
+	NODE_NUM = 8
+	BUFSIZE = 7 //channel buffer size 一般设置为数据中心节点的数目即可
 	K = 2
 )
 
@@ -51,8 +51,12 @@ func (node *Node) Running() {
 			continue
 		}
 		select {
-		case messages := <- node.Trans:
-			node.Deliver(messages)
+		case message := <- node.Trans:
+			node.Deliver(message)
+			for len(node.Trans) > 0 {
+				message = <- node.Trans
+				node.Deliver(message)
+			}
 		case <- node.Timeout:
 			node.Gossiping()
 		}
@@ -92,12 +96,16 @@ func (node *Node) Gossiping() {
 	for _, p := range perm {
 		targets = append(targets, node.Others[p])
 	}
-	transmitting(messages, targets)
+	str := transmitting(messages, targets)
+	fmt.Printf("[SEND] From: %s; To: %s\n", node.Membership.Address, str)
 	node.Time <- true
 }
 
-func transmitting(messages []Message, targets []*Node) {
+func transmitting(messages []Message, targets []*Node) string {
+	var str string
 	for _, t := range targets {
 		t.Trans <- messages
+		str+=(t.Membership.Address+" ")
 	}
+	return str
 }

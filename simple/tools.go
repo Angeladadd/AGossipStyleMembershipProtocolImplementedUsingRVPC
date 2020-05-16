@@ -33,7 +33,7 @@ func (membership *Membership) PrintUpdate() string {
         fmt.Fprintf(b, "%s,", value.String())
 	}
 	b.WriteString("\b]}\n")
-	// fmt.Printf(b.String())
+	fmt.Printf(b.String())
 	return b.String()
 }
 
