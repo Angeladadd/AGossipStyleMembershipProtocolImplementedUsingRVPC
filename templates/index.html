@@ -23,7 +23,8 @@
 <script type="text/javascript">
     function add_node(address) {
         return "<div id="+address+"><p>"+
-        address+"</p><p id="+address+"_status></p><table id="+
+        address+"</p><p id="+address+"_status></p><button type=\"button\" id="+
+        address+"_button>Change Status</button><table id="+
         address+"_list></table></div>";
     }
     function update_list(address, time, json) {
@@ -32,7 +33,7 @@
         table.append("<tr><th>ADDRESS</th><th>HEARTBEAT</th><th>STATUS</th></tr>");
         for (var val in json) {
             var str = "<tr><td>"+json[val].Message.Address+"</td><td>"+json[val].Message.Heartbeat+"</td><td>";
-            if (parseInt(time)-parseInt(json[val].LocalTime) > 1e9) {
+            if (parseInt(time)-parseInt(json[val].LocalTime) > 4e9) {
                 str += "fail";
             }
             else {
@@ -43,12 +44,22 @@
         }
     }
     function update_status(address, status) {
-        console.log(status);
+        // console.log(status);
         var p = $("#"+address+"_status");
         if (status) {
             p.html("Bad");
         }
         else p.html("Normal");
+    }
+    function change_status(address) {
+        // console.log(address);
+        $.ajax({
+           url: "/change_status/?address="+address,
+           type: "GET",
+           success: function(result) {
+               console.log("change "+address);
+           }
+        });
     }
     var getting = {
         url: "/membership",
@@ -58,12 +69,21 @@
             var div = $("#membership");
             if (div.children().length == 0) {
                 $.each(result, function(i, item) {
-                    div.append(add_node(item.Membership.Address));
+                    div.append(add_node(item.Address));
+                    $("#"+item.Address+"_button").click(function() {
+                        $.ajax({
+                            url: "/change_status?address="+item.Address,
+                            type: "GET",
+                            success: function(result) {
+                            // console.log("change "+item.Address);
+                            }
+                        });
+                    });
                 });
             }
             $.each(result, function(i, item) {
-                update_status(item.Membership.Address, item.IsBad);
-                update_list(item.Membership.Address, item.LocalTime, item.Membership.MembershipList);
+                update_status(item.Address, item.IsBad);
+                update_list(item.Address, item.LocalTime, item.MembershipList);
             });
         }
     };

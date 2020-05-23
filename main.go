@@ -25,13 +25,14 @@ func main() {
     }
 
     for {
-        http.HandleFunc("/index", handler)
+        http.HandleFunc("/index", index)
         http.HandleFunc("/membership", membership)
+        http.HandleFunc("/change_status", changeStatus)
         log.Fatal(http.ListenAndServe("localhost:8080", nil))
     }
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func index(w http.ResponseWriter, r *http.Request) {
     body, _ := ioutil.ReadFile("templates/index.html")
     fmt.Fprint(w, string(body))
 }
@@ -41,7 +42,7 @@ func membership(w http.ResponseWriter, r *http.Request) {
     header.Add("Content-Type","application/json")
     w.WriteHeader(http.StatusOK)
     var s []simple.Info
-    for _,node := range nodes {
+    for _, node := range nodes {
         s = append(s, node.Info())
     }
     b, err := json.Marshal(s)
@@ -49,5 +50,18 @@ func membership(w http.ResponseWriter, r *http.Request) {
         log.Println("marshal error")
     }
     fmt.Fprintf(w, string(b))
+}
+
+func changeStatus(w http.ResponseWriter, r *http.Request) {
+    vars := r.URL.Query() 
+    address := vars["address"][0]
+    for _, node := range nodes {
+        if (node.Address() == address) {
+            node.ChangeStatus()
+        }
+    }
+    header := w.Header()
+    header.Add("Content-Type","application/json")
+    w.WriteHeader(http.StatusOK)
 }
 
