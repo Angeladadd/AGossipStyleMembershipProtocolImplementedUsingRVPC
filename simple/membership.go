@@ -10,10 +10,6 @@ type Message struct {
 	Heartbeat int
 }
 
-/* 对于大型数据中心，我们可能会有专门的程序来处理Membership
- * 对每个MembershipCell可能会单独开线程处理读与写（这里会涉及读写锁，因为整个协议中读多写少）
- * 由于只有一台落后的4核机器，这里做串行化处理了
- */
 type Cell struct {
 	Message Message
 	LocalTime int64

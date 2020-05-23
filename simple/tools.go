@@ -23,7 +23,7 @@ type Info struct {
 }
 
 func (node Node) Info() Info {
-	return Info{Membership:*node.Membership, LocalTime:time.Now().UnixNano(), IsBad:node.IsBad}
+	return Info{Membership:*node.membership, LocalTime:time.Now().UnixNano(), IsBad:node.isbad}
 }
 
 func (membership *Membership) PrintUpdate() string {

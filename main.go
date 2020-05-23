@@ -21,7 +21,7 @@ func main() {
     for i:=0;i<simple.NODE_NUM;i++ {
         nodes[i].Others = append(nodes[i].Others, nodes[:i]...)
         nodes[i].Others = append(nodes[i].Others, nodes[i+1:]...)
-        go nodes[i].Running()
+        go nodes[i].Fragile()
     }
 
     for {
