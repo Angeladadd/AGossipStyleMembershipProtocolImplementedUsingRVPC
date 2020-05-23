@@ -15,6 +15,12 @@
         #membership {
             width: 100%;
         }
+        .bad {
+            color: red;
+        }
+        .normal {
+            color:green;
+        }
     </style>
 </head>
 <body>
@@ -32,15 +38,18 @@
         var table = $("table#"+address+"_list");
         table.append("<tr><th>ADDRESS</th><th>HEARTBEAT</th><th>STATUS</th></tr>");
         for (var val in json) {
-            var str = "<tr><td>"+json[val].Message.Address+"</td><td>"+json[val].Message.Heartbeat+"</td><td>";
+            var content = "<td>"+json[val].Message.Address+"</td><td>"+json[val].Message.Heartbeat+"</td><td>";
+            var head = "<tr class=";
             if (parseInt(time)-parseInt(json[val].LocalTime) > 4e9) {
-                str += "fail";
+                head += "bad>";
+                content += "fail";
             }
             else {
-                str += "success";
+                head += ">";
+                content += "success";
             }
-            str+="</td></tr>";
-            table.append(str);
+            content+="</td></tr>";
+            table.append(head+content);
         }
     }
     function update_status(address, status) {
@@ -48,8 +57,12 @@
         var p = $("#"+address+"_status");
         if (status) {
             p.html("Bad");
+            p.attr("class", "bad");
         }
-        else p.html("Normal");
+        else {
+            p.html("Normal");
+            // p.attr("class", "normal");
+        }
     }
     function change_status(address) {
         // console.log(address);
