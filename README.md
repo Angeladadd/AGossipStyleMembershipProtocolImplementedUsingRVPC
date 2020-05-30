@@ -1,5 +1,7 @@
 # A Gossip-Style Membership Protocol Implemented Using RVPC
 
+author: Chenge Sun
+
 ### How to Run
 
 ```bash
