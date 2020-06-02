@@ -64,16 +64,6 @@
             // p.attr("class", "normal");
         }
     }
-    function change_status(address) {
-        // console.log(address);
-        $.ajax({
-           url: "/change_status/?address="+address,
-           type: "GET",
-           success: function(result) {
-               console.log("change "+address);
-           }
-        });
-    }
     var getting = {
         url: "/membership",
         type: "GET",

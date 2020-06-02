@@ -4,7 +4,23 @@
 
 ### 实现效果
 
+Gossip消息的传播：
 
+![](pic/4.png)
+
+![](pic/5.png)
+
+![](pic/6.png)
+
+Failure Detection:
+
+![](pic/0.png)
+
+![](pic/1.png)
+
+![](pic/2.png)
+
+![](pic/3.png)
 
 ### 如何运行
 
