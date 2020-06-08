@@ -19,7 +19,7 @@
             color: red;
         }
         .normal {
-            color:green;
+            color: black;
         }
     </style>
 </head>
@@ -45,7 +45,7 @@
                 content += "fail";
             }
             else {
-                head += ">";
+                head += "normal>";
                 content += "success";
             }
             content+="</td></tr>";
@@ -61,7 +61,7 @@
         }
         else {
             p.html("Normal");
-            // p.attr("class", "normal");
+            p.attr("class", "normal");
         }
     }
     var getting = {

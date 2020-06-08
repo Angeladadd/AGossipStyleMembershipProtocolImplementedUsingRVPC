@@ -4,6 +4,10 @@
 
 ### 实现效果
 
+动态效果：
+
+![](pic/auto.gif)
+
 Gossip消息的传播：
 
 ![](pic/4.png)

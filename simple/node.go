@@ -13,7 +13,7 @@ const (
 	NODE_NUM = 5
 	BUFSIZE = 4 //channel buffer size 一般设置为数据中心节点的数目即可
 	K = 2
-	IS_AUTO = false
+	IS_AUTO = true
 )
 
 type Nil struct {}
