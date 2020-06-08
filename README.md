@@ -14,6 +14,8 @@ RVPC的语法定义与迁移语义如下：
 
 ### 实现效果
 
+我们基于随机进程模型RVPC实现了基于Gossip-Style Membership协议的一个通信过程。
+
 动态效果：
 
 ![](pic/auto.gif)
