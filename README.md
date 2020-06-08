@@ -8,9 +8,9 @@
 
 RVPC的语法定义与迁移语义如下：
 
-<img src="pic/grammar.png" width ="200"/>
+<img src="pic/grammar.png" width ="600"/>
 
-<img src="pic/symbolic_sematics.png" width="200"/>
+<img src="pic/symbolic_sematics.png" width="800"/>
 
 ### 实现效果
 
