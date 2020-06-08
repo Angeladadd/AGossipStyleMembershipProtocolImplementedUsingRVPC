@@ -7,13 +7,13 @@ import (
 )
 
 const (
-	P_FAIL=0.1
-	GOSSIP_INTERVAL=time.Second //1s发一次
-	REPAIR_TIME=4*time.Second
-	NODE_NUM = 5
+	P_FAIL=0.1 //自动失效概率
+	GOSSIP_INTERVAL=time.Second //Gossip周期
+	REPAIR_TIME=4*time.Second //失效节点修复时间
+	NODE_NUM = 5 //节点数目
 	BUFSIZE = 4 //channel buffer size 一般设置为数据中心节点的数目即可
-	K = 2
-	IS_AUTO = true
+	K = 2 //每次Gossip的目标节点数
+	IS_AUTO = true //节点是否自动随机失效
 )
 
 type Nil struct {}
